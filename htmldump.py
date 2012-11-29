@@ -26,7 +26,7 @@ import zlib
 import pymongo
 
 
-def zip_dumps(collection, docs_re, output_file):
+def archive_html(collection, docs_re, output_file):
     now_ts = time.time()
     with tarfile.open(output_file, 'w:bz2') as archive:
         spec = {}
@@ -44,8 +44,8 @@ def zip_dumps(collection, docs_re, output_file):
 
 
 def parse_args(argv):
-    parser = argparse.ArgumentParser(
-            description='Dump TED documents from MongoDB to a ZIP file.')
+    parser = argparse.ArgumentParser(description='Dump TED documents from '
+            'MongoDB to a bzip2 compressed tar archive file.')
     parser.add_argument('-H', '--host', default='localhost',
             help='the hostname of the MongoDB server (default: localhost)')
     parser.add_argument('-P', '--port', default=27017, type=int,
@@ -72,4 +72,4 @@ if __name__ == '__main__':
     if args.username is not None:
         db.authenticate(args.username, args.password)
     collection = db.dumps
-    zip_dumps(collection, args.docs_re, args.output)
+    archive_html(collection, args.docs_re, args.output)
